@@ -29,6 +29,10 @@ export class ShopService {
     return this.htpp.get<Pagination<Product[]>>(this.baseUrl + 'products',{params});
   }
 
+  getProduct(id:number){
+    return this.htpp.get<Product>(this.baseUrl + 'products/'+ id);
+  }
+
   getBrands(){
     return this.htpp.get<Brand[]>(this.baseUrl + 'products/brands')
   }
