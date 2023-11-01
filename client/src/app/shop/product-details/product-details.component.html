@@ -5,11 +5,16 @@
   <div class="col-6 mt-5">
     <h2>{{product.name}}</h2>
     <p style="font-size: 2em;" >{{product.price | currency}}</p>
+
+    <h5 class="text-danger mb-3" *ngIf="quantityInBasket > 0">
+      you hvae {{quantityInBasket}} of this itme in your basket
+    </h5>
+
     <div class="d-flex justify-content-start align-items-center">
-      <i class="fa fa-minus-circle text-warning me-2" style="cursor:pointer ;font-size: 2em;"></i>
-      <span class="font-weight-bold" style="font-size: 1.5em;">2</span>
-      <i class="fa fa-plus-circle text-warning ms-2" style="cursor: pointer;font-size: 2em;"></i>
-      <button class="btn btn-outline-secondary ms-4">Add to cart</button>
+      <i (click)="decrementQuantity()" class="fa fa-minus-circle text-warning me-2" style="cursor:pointer ;font-size: 2em;"></i>
+      <span class="font-weight-bold" style="font-size: 1.5em;">{{quantity}}</span>
+      <i (click)="incrementQuantity()"  class="fa fa-plus-circle text-warning ms-2" style="cursor: pointer;font-size: 2em;"></i>
+      <button (click)="udpateBasket()" [disabled]="quantity === quantityInBasket"  class="btn btn-outline-danger ms-4">Add to cart</button>
     </div>
     <div class="row mt-4">
       <h4>Descriptoin</h4>

@@ -7,13 +7,16 @@ bg-white border-bottom fixed-top shadow-sm">
         routerLink ="/"
         [routerLinkActiveOptions]="{exact:true}"
         >Home</a>
-      <a class="p-2" routerLinkActive="active" routerLink ="shop">Shop</a>
+      <a class="p-2" routerLinkActive="active" routerLink ="/shop">Shop</a>
       <a class="p-2" routerLinkActive="active" routerLink ="/test-error">errors</a>
     </nav>
     <div class="d-flex align-items-center">
-      <a class="position-relative">
+      <a routerLink="/basket" class="position-relative">
         <i class="fa fa-shopping-cart fa-2x me-5 text-dark"></i>
-        <div class="cart-no">5</div>
+        <div *ngIf="basketService.basketSource$ | async as basket" class="cart-no">
+          <!-- {{basket.items.length}} -->
+          {{getCount(basket.items)}}
+        </div>
       </a>
       <a href="" class="btn btn-outline-secondary me-2">Login</a>
       <a href="" class="btn btn-outline-secondary me-3">Sign up</a>
