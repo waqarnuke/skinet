@@ -1,3 +1,4 @@
+# radis run with this command docker-compose up
 services:
 
   redis:

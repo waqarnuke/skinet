@@ -13,25 +13,23 @@ namespace API.Extensions
         public static IServiceCollection AddApplicationServices(this IServiceCollection services,
             IConfiguration config)
         {
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-            services.AddEndpointsApiExplorer();
-            services.AddSwaggerGen();
+
             services.AddDbContext<StoreContext>(opt =>
             {
                 opt.UseSqlite(config.GetConnectionString("DefaultConnection"));
             });
 
-            services.AddSingleton<IConnectionMultiplexer>(c => 
+            services.AddSingleton<IConnectionMultiplexer>(c =>
             {
                 var option = ConfigurationOptions.Parse(config.GetConnectionString("Redis"));
                 return ConnectionMultiplexer.Connect(option);
             });
             services.AddScoped<IBasketRepository, BasketRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
-            services.AddScoped<ITokenService,TokenService>();
+            services.AddScoped<ITokenService, TokenService>();
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-            services.Configure<ApiBehaviorOptions>(options => 
+            services.Configure<ApiBehaviorOptions>(options =>
             {
                 options.InvalidModelStateResponseFactory = ActionContext =>
                 {
@@ -40,24 +38,24 @@ namespace API.Extensions
                         .SelectMany(x => x.Value.Errors)
                         .Select(x => x.ErrorMessage).ToArray();
 
-                    var errorRespose =  new ApiValidationErrorResponse 
+                    var errorRespose = new ApiValidationErrorResponse
                     {
                         Errors = errors
                     };
-                    return new BadRequestObjectResult(errorRespose);    
+                    return new BadRequestObjectResult(errorRespose);
                 };
             });
-            
+
             services.AddCors(opt =>
             {
                 opt.AddPolicy("CorsPolicy", policy =>
-                {                                                         
+                {
                     //policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200");
                     policy.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod();
                 });
             });
 
             return services;
-        } 
+        }
     }
 }

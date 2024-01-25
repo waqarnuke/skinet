@@ -15,6 +15,7 @@ builder.Services.AddControllers();
 
 builder.Services.AddApplicationServices(builder.Configuration);
 builder.Services.AddIdentityService(builder.Configuration);
+builder.Services.AddSwaggerDocumentation();
 
 var app = builder.Build();
 
@@ -24,8 +25,7 @@ app.UseMiddleware<ExceptoinMiddleware>();
 
 app.UseStatusCodePagesWithReExecute("/errors/{0}");
 
-app.UseSwagger();
-app.UseSwaggerUI();
+app.UseSwaggerDocumentation();
 
 app.UseStaticFiles();
 //app.UseHttpsRedirection();
@@ -39,9 +39,9 @@ app.MapControllers();
 
 using var scope = app.Services.CreateAsyncScope();
 var services = scope.ServiceProvider;
-var context  = services.GetRequiredService<StoreContext>();
-var identityContext  = services.GetRequiredService<AppIdentityDBContext>();
-var userManager  = services.GetRequiredService<UserManager<AppUser>>();
+var context = services.GetRequiredService<StoreContext>();
+var identityContext = services.GetRequiredService<AppIdentityDBContext>();
+var userManager = services.GetRequiredService<UserManager<AppUser>>();
 var logger = services.GetRequiredService<ILogger<Program>>();
 try
 {
@@ -52,7 +52,7 @@ try
 }
 catch (Exception ex)
 {
-    logger.LogError(ex,"An error accoured dring migratin");
+    logger.LogError(ex, "An error accoured dring migratin");
 }
 
 app.Run();
