@@ -1,4 +1,5 @@
 using API.Errors;
+using Core;
 using Core.Interfaces;
 using Infrastructure.Data;
 using Infrastructure.Services;
@@ -25,6 +26,7 @@ namespace API.Extensions
                 return ConnectionMultiplexer.Connect(option);
             });
             services.AddScoped<IBasketRepository, BasketRepository>();
+            services.AddScoped<IPaymentService, PaymentService>();
             services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IProductRepository, ProductRepository>();
