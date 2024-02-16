@@ -25,6 +25,7 @@ namespace API.Extensions
                 var option = ConfigurationOptions.Parse(config.GetConnectionString("Redis"));
                 return ConnectionMultiplexer.Connect(option);
             });
+            services.AddSingleton<IResponseCacheService, ResponseCacheSercie>();
             services.AddScoped<IBasketRepository, BasketRepository>();
             services.AddScoped<IPaymentService, PaymentService>();
             services.AddScoped<IOrderService, OrderService>();
