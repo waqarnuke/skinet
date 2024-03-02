@@ -10,13 +10,12 @@ namespace API.Extensions
 {
     public static class IdentityServiceExtensions
     {
-        public static IServiceCollection  AddIdentityService(this IServiceCollection services ,IConfiguration config)
+        public static IServiceCollection AddIdentityService(this IServiceCollection services, IConfiguration config)
         {
-    
-	        var key = Encoding.ASCII.GetBytes(config["Token:Key"]);
-            services.AddDbContext<AppIdentityDBContext>( opt =>
+            var key = Encoding.ASCII.GetBytes(config["Token:Key"]);
+            services.AddDbContext<AppIdentityDBContext>(opt =>
             {
-                opt.UseSqlite(config.GetConnectionString("IdentityConnection"));     
+                opt.UseNpgsql(config.GetConnectionString("IdentityConnection"));
             });
 
             services.AddIdentityCore<AppUser>(opt =>
@@ -27,19 +26,19 @@ namespace API.Extensions
             .AddSignInManager<SignInManager<AppUser>>();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options => 
+                .AddJwtBearer(options =>
                 {
-                    options.TokenValidationParameters = new  TokenValidationParameters 
+                    options.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuerSigningKey = true,
                         IssuerSigningKey = new SymmetricSecurityKey(key),
                         ValidateIssuer = false,
                         ValidateAudience = false,
-                        ValidateLifetime = false, 
-                        
+                        ValidateLifetime = false,
+
                         ValidIssuer = config["Token:Issuer"],
                         ValidAudience = config["Token:Audience"]
-                        
+
                         // ValidateIssuerSigningKey = true,
                         // IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Token:Key"])),  
                         // ValidIssuer = config["Token:Issure"],

@@ -1,8 +1,18 @@
 # radis run with this command docker-compose up
 services:
-
+  skinet:
+    image: docker.io.library/skinet
+    depends_on:
+      - db
+    container_name: demoapp
+    ports:
+      - 8080:80
+    build:
+      context: .
+      dockerfile: dockerfile  
   redis:
     image: redis:latest
+    restart: always
     ports:
       - 6379:6379
     command: ["redis-server", "--appendonly", "yes"]
@@ -19,6 +29,18 @@ services:
       - 8081:8081
     depends_on:
       - redis
-    
+
+  db:
+    image: postgres:latest
+    container_name: db
+    environment:
+      POSTGRES_PASSWORD : secret
+      POSTGRES_USER : appuser
+      POSTGRES_DB : skinet
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres-data:/data    
 volumes:
   redis-data:
+  postgres-data : 

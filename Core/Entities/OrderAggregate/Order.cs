@@ -1,7 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Core.Entities.OrderAggregate
 {
@@ -21,13 +19,21 @@ namespace Core.Entities.OrderAggregate
             this.Subtotal = subtotal;
             this.PaymentIntentId = paymentIntentId;
         }
+
+        [Column(TypeName = "VARCHAR")]
+        [StringLength(250)]
         public string BuyerEmail { get; set; }
         public DateTime OrderDate { get; set; } = DateTime.UtcNow;
+
+        [Required]
         public Address ShipToAddress { get; set; }
         public DeliveryMethod DeliveryMethod { get; set; }
         public IReadOnlyList<OrderItem> OrderItems { get; set; }
         public decimal Subtotal { get; set; }
         public OrderStatus Status { get; set; } = OrderStatus.Pending;
+
+        [Column(TypeName = "VARCHAR")]
+        [StringLength(250)]
         public string PaymentIntentId { get; set; }
 
         public decimal GetTotal()
